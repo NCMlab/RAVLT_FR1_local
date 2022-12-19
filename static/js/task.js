@@ -2,19 +2,19 @@ async function runExperiment() {
 
     /* - - - - PSITURK - - - - */
   
-    var psiturk = new PsiTurk(uniqueId, adServerLoc, mode);
+   // var psiturk = new PsiTurk(uniqueId, adServerLoc, mode);
   
     // Record screen resolution & available screen size
-    psiturk.recordUnstructuredData('screen_width', screen.width)
+ /*   psiturk.recordUnstructuredData('screen_width', screen.width)
     psiturk.recordUnstructuredData('screen_height', screen.height)
     psiturk.recordUnstructuredData('avail_screen_width', screen.availWidth)
     psiturk.recordUnstructuredData('avail_screen_height', screen.availHeight)
     psiturk.recordUnstructuredData('color_depth', screen.colorDepth)
     psiturk.recordUnstructuredData('pixel_depth', screen.pixelDepth)
-
+*/
     var pages = [];
   
-    await psiturk.preloadPages(pages);
+    //await psiturk.preloadPages(pages);
       
     /*Creates a timeline for the experiment*/
 
@@ -42,10 +42,10 @@ async function runExperiment() {
     
     audio_test = jsPsychUtils.get_audio_test();
     attention_test = jsPsychUtils.get_attention_check();
-    check_willing = jsPsychUtils.get_check_willing(psiturk);
+    //check_willing = jsPsychUtils.get_check_willing(psiturk);
     let start_recall = {
         type: "audio-keyboard-response",
-        stimulus: '/static/audio/beephigh.wav',
+        stimulus: '../static/audio/beephigh.wav',
         choices: jsPsych.NO_KEYS,
         trial_ends_after_audio: true,
         data: {type: 'tone', phase: 'RAVLT'}
@@ -53,7 +53,7 @@ async function runExperiment() {
 
     let end_recall = {
         type: "audio-keyboard-response",
-        stimulus: '/static/audio/beeplow.wav',
+        stimulus: '../static/audio/beeplow.wav',
         choices: jsPsych.NO_KEYS,
         trial_ends_after_audio: true,
         data: {type: 'tone', phase: 'RAVLT'}
@@ -487,7 +487,7 @@ async function runExperiment() {
         //     test_procedureA = alt_test_procedureA
         //     test_procedureB = alt_test_procedureB
         //     speed_test_procedureA = alt_speed_test_procedureA
-        timeline = timeline.concat(audio_test, intro) 
+        //timeline = timeline.concat(audio_test, intro) 
         for(var i = 0; i < 5; i++){
             timeline = timeline.concat(fixation, test_procedureA, fixation, RAVLT_recallA);
         }
@@ -496,14 +496,15 @@ async function runExperiment() {
         timeline = timeline.concat(music_instructions, video_procedure, fixation, instructions3, fixation, speed_test_procedureA, RAVLT_recallA);
     }
     /* FULL BLOCKING*/
-    timeline.push(check_willing)
+    //timeline.push(check_willing)
     timeline = timeline.concat(attention_test, welcome)
-    if(condition < 2){
+    /*if(condition < 2){
         FR1()    
     }
     else{
         RAVLT()
-    }
+    }*/
+    RAVLT()
     timeline.push(notes, finito);
     window.onbeforeunload = function() {
       return "Warning: Refreshing the window will RESTART the experiment from the beginning! Please avoid refreshing your browser while the task is running.";
@@ -513,7 +514,7 @@ async function runExperiment() {
     jsPsych.init({
         timeline: timeline,
         preload_audio: [staudio, altaudio],
-        preload_video: videos,
+        //preload_video: videos,
         exclusions: {audio: true},
         use_webaudio: false,
         on_finish: function() {
@@ -522,8 +523,8 @@ async function runExperiment() {
             Questionnaire(psiturk);
         },
         on_data_update: function(data) {
-            psiturk.recordTrialData(data);
-            psiturk.saveData();
+            //psiturk.recordTrialData(data);
+            //psiturk.saveData();
         },
         exclusions: {
           min_width: 800,
